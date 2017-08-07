@@ -2,7 +2,7 @@
 
 set -euf -o pipefail
 
-if [ $# -eq 0 ]; then
+if [ $# -ne 1 ]; then
   echo "No arguments supplied"
   echo "Usage: $0 folder"
   exit 1
