@@ -11,3 +11,6 @@ while read -r line; do
 done < $temp
 
 cat $git_status |grep "ahead" -B1
+
+rm -f $git_status
+rm -f $temp
