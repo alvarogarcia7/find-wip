@@ -2,6 +2,12 @@
 
 set -euf -o pipefail
 
+if [ $# -eq 0 ]; then
+  echo "No arguments supplied"
+  echo "Usage: $0 folder"
+  exit 1
+fi
+
 git_status=$(mktemp)
 
 find_all_git_repos() {
