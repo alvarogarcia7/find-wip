@@ -2,11 +2,14 @@
 
 set -euf -o pipefail
 
-if [ $# -ne 1 ]; then
-  echo "No arguments supplied"
-  echo "Usage: $0 folder"
-  exit 1
-fi
+function validate_args() {
+  if [ $# -ne 1 ]; then
+    echo "No arguments supplied"
+    echo "Usage: $0 folder"
+    exit 1
+  fi
+  echo "$1"
+}
 
 git_status=$(mktemp)
 
@@ -32,8 +35,9 @@ function inform_ahead_repos() {
 }
 
 function main() {
-  find_all_git_repos "$1"
+  folder=$(validate_args $@)
+  find_all_git_repos "$folder"
   inform_ahead_repos
 }
 
-main "$1"
+main $@
