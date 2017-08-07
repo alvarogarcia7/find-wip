@@ -1,16 +1,33 @@
+#!/bin/bash
+
+set -euf -o pipefail
+
 git_status=$(mktemp)
-temp=$(mktemp)
 
-find "$1" -iname ".git" -type d >> $temp
+find_all_git_repos() {
+  temp=$(mktemp)
 
-while read -r line; do
+  find "$1" -iname ".git" -type d >> $temp
+
+  while read -r line; do
     cd "$line/.."
     pwd >> $git_status
+    set +e
     git status|grep "Your branch is ahead" >> $git_status
+    set -e
     cd - >> $git_status
-done < $temp
+  done < $temp
+  rm -f $temp
+}
 
-cat $git_status |grep "ahead" -B1
+function inform_ahead_repos() {
+  cat $git_status |grep "ahead" -B1
+  rm -f $git_status
+}
 
-rm -f $git_status
-rm -f $temp
+function main() {
+  find_all_git_repos "$1"
+  inform_ahead_repos
+}
+
+main "$1"
