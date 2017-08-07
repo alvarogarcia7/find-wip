@@ -13,7 +13,7 @@ function validate_args() {
 
 git_status=$(mktemp)
 
-find_all_git_repos() {
+function find_all_git_repos() {
   temp=$(mktemp)
 
   find "$1" -iname ".git" -type d >> $temp
